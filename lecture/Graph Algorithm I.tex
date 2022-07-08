@@ -451,9 +451,9 @@
 
         \begin{itemize}
             \item<1-> 先來解讀一下操作的意思：
-            \item<2-> 假設 $dep(a_{e_i}) < dep(b_{e_i})$，那麼對於所有 $a_{e_i}$ 能走到且不經過 $b_{e_i}$ 的點就是 $a_{e_i}$ 的祖先，反之就是子孫
+            \item<2-> 假設 $dep(a_{e_i}) < dep(b_{e_i})$，那麼對於所有 $a_{e_i}$ 能走到且不經過 $b_{e_i}$ 的點就是除了 $b_{e_i}$ 的子孫的所有點，反之就是 $b_{e_i}$ 的子孫
             \item<3-> 所以我們需要做的事情就是將某個點的祖先或是子孫的 $c_i$ 全部加上 $x_i$
-            \item<4-> 判斷子孫的部分剛剛講過了，要判斷點 $v$ 是否為點 $u$ 的祖先我們只需要找 $intime() > intime(u)$ 的點及可
+            \item<4-> 判斷子孫的部分剛剛講過了，要判斷點 $v$ 是否為點 $u$ 的祖先我們只需要判斷 $intime(v) > intime(u)$ 即可
         \end{itemize}
     \end{frame}
     
@@ -462,7 +462,7 @@
             \item<1-> 定義 $cnt[i]$ 是第 $i$ 個時間點走到的點的 $c_i$ 值
             \item<1-> 假設要操作的點是 $a, b$ 且 $dep(a) < dep(b)$
             \item<2-> 那麼當 $t_i = 1$ 時，就是將除了 $[intime[b], outtime[b]]$ 以外的時間都加上 $x_i$，也就是將 $[1, intime[b]), (outtime[b], n * 2]$ 都加上 $x_i$
-            \item<2-> 反之，如果 $t_i = 2$，就是將 $[intime[a], outtime[a]]$ 都加上 $x_i$
+            \item<2-> 反之，如果 $t_i = 2$，就是將 $[intime[b], outtime[b]]$ 都加上 $x_i$
             \item<2-> 至於 $dep(a) > dep(b)$ 就是相反
         \end{itemize}
     \end{frame}
@@ -491,7 +491,7 @@
         \begin{itemize}
             \item<1-> 結合以上兩點，我們就可以整理出 $dep(a) < dep(b)$ 時的操作方式：
             \item<2-> $t_i = 1$：cnt[1] += x, cnt[intime[b]] -= x, cnt[outtime[b] + 1] += x, cnt[n * 2 + 1] -= x
-            \item<2-> $t_i = 2$：cnt[intime[a]] += x, cnt[outtime[a] + 1] += x
+            \item<2-> $t_i = 2$：cnt[intime[b]] += x, cnt[outtime[b] + 1] += x
             \item<3-> 最後，如果要求出每個時間點確切的 $c_i$ 值，就只需要對 cnt 做前綴和就好了！
             \item<4-> 因為我們在做樹壓平的時候有紀錄每個時間點走到的點是哪一個，所以可以直接利用樹壓平所記錄的資訊將 $cnt$ 轉換成每個點的 $c_i$
             \item<4-> 時間複雜度：$\mathcal{O}(n + q)$
