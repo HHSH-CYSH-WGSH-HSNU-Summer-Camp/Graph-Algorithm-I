@@ -6,6 +6,6 @@ void dfs(int i) {
 
     for (int e: G[i]) {
         if (!vis[e])
-            dfs(i);
+            dfs(e);
     }
 }
